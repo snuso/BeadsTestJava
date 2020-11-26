@@ -8,6 +8,7 @@ import net.beadsproject.beads.ugens.GranularSamplePlayer;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import net.beadsproject.beads.ugens.Static;
 
+import javax.sound.midi.MidiSystem;
 import java.util.Scanner;
 
 public class Main{
@@ -19,7 +20,7 @@ public class Main{
         Sample sourceSample = null;
         boolean sampleReady = false;
         try{
-            sourceSample = new Sample("bells.wav");
+            sourceSample = new Sample("alarm05.wav");
         }
         catch(Exception e){
             /*
@@ -49,21 +50,23 @@ public class Main{
 
         // connect gsp to ac
         ac.out.addInput(gsp);
-        
+        ac.start();
         sampleReady = true;
+
+        Synth synth = new Synth();
+        MidiKeyboard midiKeyboard = new MidiKeyboard(synth);
         while(sampleReady){
 
-            System.out.println("Ready!");
-            Scanner scanner = new Scanner(System.in);
-            float ScannerFloat = scanner.nextFloat();
-            System.out.println("ScannerFloat is set to: " + ScannerFloat);
+            System.out.println("ScannerFloat is set to: " + synth.getPin());
+            System.out.println();
             gsp.setGrainSize(new Static(ac, 500));
 
-            gsp.setPitch(new Static(ac, ScannerFloat ));
+            gsp.setGrainSize(new Static(ac, synth.getPin() ));
+            try {
+                Thread.sleep(500);
+            }catch(InterruptedException e){
 
-            // begin audio processing
-            ac.start();
+            }
         }
     }
 }
-
