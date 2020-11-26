@@ -41,12 +41,11 @@ public class MidiKeyboard {
         public void send(MidiMessage msg, long timeStamp) {
             byte[] aMsg = msg.getMessage();
             for (int i = 0; i < msg.getLength(); i++) {
-//                System.out.println(aMsg[i]);
+                // set == to midi-transmitter
                 if(aMsg[0] == -80){
                     synth.receiveMidi(aMsg);
                 }
             }
-//            System.out.println();
         }
 
         public void close() {
