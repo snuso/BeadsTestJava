@@ -1,69 +1,67 @@
 package com.company;
+import java.util.HashMap;
 
 public class Synth {
-    final int Pin1 = 1;
-    int pin1Value = 0;
-    final int Pin2 = 2;
-    int pin2Value = 0;
-    final int Pin3 = 3;
-    int pin3Value = 0;
-    final int Pin4 = 4;
-    int pin4Value = 0;
+    int[] knobValues = new int[] {0, 0, 0, 0};
+
+   int[] padValues = new int[] {0, 0, 0, 0, 0};
+
+   int pad1Value = 44;
+   int pad2Value = 45;
+   int pad3Value = 46;
+   int pad4Value = 47;
+   int pad5Value = 48;
 
     //byte[] synthByte;
-
     public Synth() {
-
     }
 
-    public void receiveMidi(byte[] a) {
-
-
-        switch(a[1]){
-            case 1:
-                pin1Value = a[2];
-                System.out.println("Knob 1 value is set to: " + pin1Value);
-                break;
-            case 2:
-                pin2Value = a[2];
-                System.out.println("Knob 2 value is set to: " + pin2Value);
-                break;
-            case 3:
-                pin3Value = a[2];
-                System.out.println("Knob 3 value is set to: " + pin3Value);
-                break;
-            case 4:
-                pin4Value = a[2];
-                System.out.println("Knob 4 value is set to: " + pin4Value);
-                break;
-            default:
-                System.out.println("Something went wrong");
-                break;
+    public void receiveKnobMidi(byte[] a) {
+        if (a[1] > 0 && a[1] <= knobValues.length) {
+            knobValues[a[1]] = a[2];
+            System.out.println("Knob " + a[1] + " value is set to " + knobValues[a[1]]);
+        } else {
+            System.out.println("Something went wrong");
         }
-
-        /*
-        if (a[1] == Pin1) {
-            pin1Value = a[2];
-            //System.out.println("Pitch was set at " + pitch);
-            synthByte = a;
-        }*/
     }
 
-    public float pin1Value(){
-        return pin1Value;
-
+    public float getKnobValue(int index) {
+        if (index > 0 && index <= knobValues.length) {
+            return knobValues[index];
+        } else {
+            return 0;
+        }
     }
-    public float pin2Value(){
-        return pin2Value;
-
+    public int getPad1Value() {
+        return pad1Value;
     }
-    public float pin3Value(){
-        return pin3Value;
-
+    public int getPad2Value(){
+        return pad2Value;
     }
-    public float pin4Value(){
-        return pin4Value;
-
+    public int getPad3Value(){
+        return pad3Value;
+    }
+    public int getPad4Value(){
+        return pad4Value;
+    }
+    public int getPad5Value(){
+        return pad5Value;
     }
 
+    public void receivePadMidi(byte[] a) {
+        if (a[1] > 43 && a[1] < 49) {
+            System.out.println(a[1]);
+            padValues[a[1]-44] = a[1];
+            System.out.println("Pad " + a[1] + " value is set to " + padValues[a[1]-44]);
+        } else {
+            System.out.println("Something went wrong");
+        }
+    }
+    public int getPadValue(int index) {
+        if (index > 43 && index <= padValues.length) {
+            return padValues[0];
+        } else {
+            return 0;
+        }
+    }
 }

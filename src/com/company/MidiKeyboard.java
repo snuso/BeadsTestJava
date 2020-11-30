@@ -26,7 +26,6 @@ public class MidiKeyboard {
             } catch (MidiUnavailableException e) {
             }
         }
-
     }
 
     public class MidiInputReceiver implements Receiver {
@@ -43,7 +42,10 @@ public class MidiKeyboard {
             for (int i = 0; i < msg.getLength(); i++) {
                 // set == to midi-transmitter
                 if(aMsg[0] == -80){
-                    synth.receiveMidi(aMsg);
+                    synth.receiveKnobMidi(aMsg);
+                }
+                if (aMsg[0] == -112){
+                    synth.receivePadMidi(aMsg);
                 }
             }
         }
