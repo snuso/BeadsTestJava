@@ -47,30 +47,21 @@ public class Main{
             // knob
             gsp.setPitch(new Static(ac, (float) (synth.getKnobValue(1)*(0.1))));
 
-            if(synth.getPad1Value() == 44){
-                System.out.println("44 has been triggered");
+
+            if(synth.getPadValue(44) == 44){
                 gsp.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
-                return;
+                System.out.println("Loop set to " + gsp.getLoopType());
             }
-            if(synth.getPad2Value() == 45){
-                System.out.println("45 has been triggered");
+            if(synth.getPadValue(45) == 45){
                 gsp.setLoopType(SamplePlayer.LoopType.LOOP_BACKWARDS);
-                return;
+                System.out.println("Loop set to " + gsp.getLoopType());
             }
-            if(synth.getPad3Value() == 46){
-                System.out.println("46 has been triggered");
-                gsp.setLoopType(SamplePlayer.LoopType.LOOP_ALTERNATING);
-                return;
-            }
-            if(synth.getPad4Value() == 47){
-                System.out.println("47 has been triggered");
-                gsp.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
-                return;
-            }
-            if(synth.getPad5Value() == 48){
-                System.out.println("48 has been triggered");
-                gsp.setLoopType(SamplePlayer.LoopType.NO_LOOP_BACKWARDS);
-                return;
+
+            // System.out.println(synth.getPadValue(44));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

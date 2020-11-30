@@ -3,14 +3,13 @@ import java.util.HashMap;
 
 public class Synth {
     int[] knobValues = new int[] {0, 0, 0, 0};
+    int[] padValues = new int[] {0, 0, 0, 0, 0};
 
-   int[] padValues = new int[] {0, 0, 0, 0, 0};
-
-   int pad1Value = 44;
-   int pad2Value = 45;
-   int pad3Value = 46;
-   int pad4Value = 47;
-   int pad5Value = 48;
+    int pad1Value = 44;
+    int pad2Value = 45;
+    int pad3Value = 46;
+    int pad4Value = 47;
+    int pad5Value = 48;
 
     //byte[] synthByte;
     public Synth() {
@@ -53,13 +52,16 @@ public class Synth {
             System.out.println(a[1]);
             padValues[a[1]-44] = a[1];
             System.out.println("Pad " + a[1] + " value is set to " + padValues[a[1]-44]);
-        } else {
+
+        }else {
             System.out.println("Something went wrong");
         }
     }
+
     public int getPadValue(int index) {
-        if (index > 43 && index <= padValues.length) {
-            return padValues[0];
+        if (index > 43 && index <= knobValues.length-44) {
+            System.out.println("pad is set to: " + knobValues[index]);
+            return knobValues[index];
         } else {
             return 0;
         }
