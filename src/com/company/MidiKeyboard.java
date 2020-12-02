@@ -48,7 +48,7 @@ public class MidiKeyboard {
                     synth.receivePadMidi(aMsg);
                 }
 
-                System.out.println(aMsg[i]);
+              //  System.out.println(aMsg[i]);
 
 
             }
