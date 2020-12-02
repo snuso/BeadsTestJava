@@ -47,10 +47,7 @@ public class MidiKeyboard {
                 if (aMsg[0] == -112){
                     synth.receivePadMidi(aMsg);
                 }
-
               //  System.out.println(aMsg[i]);
-
-
             }
         }
 

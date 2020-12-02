@@ -6,17 +6,16 @@ import net.beadsproject.beads.ugens.GranularSamplePlayer;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import net.beadsproject.beads.ugens.Static;
 
-public class Main{
-    public static void main(String[] args){
+public class Main {
+    public static void main(String[] args) {
         AudioContext ac = new AudioContext();
         // load the source sample from a file
         Sample sourceSample = null;
         boolean sampleReady = false;
-        try{
-            sourceSample = new Sample("bells.wav");
+        try {
+            sourceSample = new Sample("Ring02.wav");
             sampleReady = true;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             System.exit(1);
@@ -26,41 +25,72 @@ public class Main{
 
         // connect gsp to ac
         ac.out.addInput(gsp);
-        gsp.setPitch(new Static(ac, 1));
 
         // instantiate synth and midikeyboard
         Synth synth = new Synth();
         MidiKeyboard midiKeyboard = new MidiKeyboard(synth);
         gsp.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
         ac.start();
+
+
+
         // while-loop to configure modifiers live
-        while(sampleReady){
+        while (sampleReady) {
+
             // knobs
-            gsp.setPitch(new Static(ac, (float) (synth.getKnobValue(1)*(0.1))));
-            gsp.setGrainSize(new Static(synth.getKnobValue(2)));
-            gsp.setGrainInterval(new Static((float) (synth.getKnobValue(3)*(0.1))));
-            gsp.setRandomness(new Static(synth.getKnobValue(4)));
-            gsp.setLoopStart(new Static((float) (synth.getKnobValue(5))*(100)));
-            gsp.setLoopEnd(new Static((float) (synth.getKnobValue(6))*(100)));
-            gsp.setLoopCrossFade(synth.getKnobValue(7));
+
+            // Pitch
+           /* gsp.setPitch(new Static(ac, (synth.getKnobValue(1) * (0.1f) / (6.3f))));
+
+            // Grain size
+            if (synth.getKnobValue(2) == 0) {
+                synth.setKnobValue(2, 1);
+            }
+            gsp.setGrainSize(new Static(ac, synth.getKnobValue(2) * (0.7f)));
+
+
+            // Grain interval
+            gsp.setGrainInterval(new Static(ac, (synth.getKnobValue(3) * (4))));
+            if (synth.getKnobValue(3) == 0) {
+                synth.setKnobValue(3, 1);
+            }
+            // Random
+            gsp.setRandomness(new Static(synth.getKnobValue(4))); */
+
+            // Loop start/end
+            gsp.setLoopStart(new Static(((synth.getKnobValue(5)) * 100)));
+            if (synth.getKnobValue(5) > synth.getKnobValue(6)) {
+                synth.setKnobValue(5, (int) synth.getKnobValue(6) - 1);
+            }
+
+            if ((synth.getKnobValue(6)) * (100) > sourceSample.getLength()) {
+                synth.setKnobValue(6, (int) sourceSample.getLength() / 100);
+            }
+            gsp.setLoopEnd(new Static((synth.getKnobValue(6)) * (100)));
+
+            // Random pan
+            gsp.setRandomPan(new Static(ac, synth.getKnobValue(7) * (0.3f)));
 
             // Pads
-            switch(synth.getPadValue()){
+            switch (synth.getPadValue()) {
                 case 44:
                     System.out.println("44 has been triggered");
                     gsp.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
                     synth.setPadValue(0);
                     break;
+
                 case 45:
                     System.out.println("45 has been triggered");
                     gsp.setLoopType(SamplePlayer.LoopType.LOOP_BACKWARDS);
                     synth.setPadValue(0);
                     break;
+
                 case 46:
                     System.out.println("46 has been triggered");
                     gsp.setLoopType(SamplePlayer.LoopType.LOOP_ALTERNATING);
                     synth.setPadValue(0);
                     break;
+
                 case 47:
                     System.out.println("47 has been triggered");
                     gsp.setLoopType(SamplePlayer.LoopType.NO_LOOP_FORWARDS);
@@ -75,3 +105,23 @@ public class Main{
         }
     }
 }
+
+           /* System.out.println("Pos: " + (int)gsp.getPosition());
+            System.out.println("Length: " + (int)sourceSample.getLength());
+            System.out.println("Knob: " + (synth.getKnobValue(6))); *
+
+            /* Jakobs løsning på no loop BUG
+            System.out.println("Pos: " + (int)gsp.getPosition());
+            System.out.println("Length :" + (int)sourceSample.getLength());
+            if (gsp.getLoopType() == SamplePlayer.LoopType.NO_LOOP_BACKWARDS || gsp.getLoopType() == SamplePlayer.LoopType.NO_LOOP_FORWARDS && (int)gsp.getPosition() == (int)sourceSample.getLength()+10) {
+                System.out.println("If fest");
+                gsp.setPosition(0);
+                ac.start();
+            }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } */
+
+

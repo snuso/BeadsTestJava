@@ -2,14 +2,8 @@ package com.company;
 import java.util.HashMap;
 
 public class Synth {
-    int[] knobValues = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+    float[] knobValues = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
     int[] padValues = new int[]{0};
-
-    int pad1Value = 44;
-    int pad2Value = 45;
-    int pad3Value = 46;
-    int pad4Value = 47;
-    int pad5Value = 48;
 
     //byte[] synthByte;
     public Synth() {
@@ -24,33 +18,18 @@ public class Synth {
         }
     }
 
-    public float getKnobValue(int index) {
-        if (index > 0 && index <= knobValues.length) {
-            return knobValues[index];
+    public float getKnobValue(int knobTransmitter) {
+        if (knobTransmitter > 0 && knobTransmitter <= knobValues.length) {
+            return knobValues[knobTransmitter];
         } else {
             return 0;
         }
     }
 
-    public int getPad1Value() {
-        return pad1Value;
+    public void setKnobValue(int knobTransmitter, int value){
+        knobValues[knobTransmitter] = value;
     }
 
-    public int getPad2Value() {
-        return pad2Value;
-    }
-
-    public int getPad3Value() {
-        return pad3Value;
-    }
-
-    public int getPad4Value() {
-        return pad4Value;
-    }
-
-    public int getPad5Value() {
-        return pad5Value;
-    }
 
     public void receivePadMidi(byte[] a) {
         if (a[1] > 43 && a[1] < 49) {
